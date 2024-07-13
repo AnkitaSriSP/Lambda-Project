@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Body
+from fastapi.responses import Response
 from src.models.user import User
 from src.database.db import get_database
 from bson import ObjectId
@@ -10,8 +11,8 @@ router = APIRouter()
 
 # Test route
 @router.get(
-        "/users", 
-        tags=["users"]
+    "/users", 
+    tags=["users"]
 )
 async def read_users():
     return [{"username": "Rick"}, {"username": "Morty"}]
@@ -58,3 +59,27 @@ async def create_user(user: User = Body(...)):
         {"_id": new_user.inserted_id}
     )
     return created_user
+
+
+# Delete a User
+@router.delete(
+    "/users/{id}", 
+    response_description="Delete a user"
+)
+async def delete_user(id: str):
+    """
+    Remove a single user record from the database.
+    """
+    delete_result = await user_collection.delete_one({"_id": ObjectId(id)})
+
+    if delete_result.deleted_count == 1:
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+    raise HTTPException(status_code=404, detail=f"User {id} not found")
+
+"""
+Functions to add:
+- Update user
+- Add club to a user
+- Remove club from a user
+"""

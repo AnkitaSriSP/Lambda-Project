@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 from pydantic.functional_validators import BeforeValidator
+
 from typing import List, Optional
 from bson import ObjectId
 from typing_extensions import Annotated
@@ -21,4 +22,6 @@ class User(BaseModel):
     email: EmailStr = Field(...)
     role: str = Field(...) # Basically a role can be 'admin' or 'user' (or student or club_head or faculty etc.)
     # is_admin: bool = False
-    clubs: List[PyObjectId] = Field(default_factory=list) # Will contain club ids
+    club_ids: List[PyObjectId] = Field(default_factory=list)
+    fav_club_ids: List[PyObjectId] = Field(default_factory=list)
+    head_of_club_ids: List[PyObjectId] = Field(default_factory=list)
