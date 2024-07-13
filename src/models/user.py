@@ -20,7 +20,6 @@ class User(BaseModel):
     password: str = Field(...)
     rollno: str = Field(...)
     email: EmailStr = Field(...)
-    role: str = Field(...) # Basically a role can be 'admin' or 'user' (or student or club_head or faculty etc.)
     # is_admin: bool = False
     club_ids: List[PyObjectId] = Field(default_factory=list)
     fav_club_ids: List[PyObjectId] = Field(default_factory=list)
